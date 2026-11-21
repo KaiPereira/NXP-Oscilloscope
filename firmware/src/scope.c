@@ -82,7 +82,7 @@ void scope_reset(void)
     {
         g_set.ch[i].enabled = (i == 0U);
         g_set.ch[i].range = g_ranges[g_numRanges - 1U];
-        g_set.ch[i].offset = FIXED_OFFSET_V;
+        g_set.ch[i].offset = DEFAULT_OFFSET_V;
     }
     g_set.rate = g_rates[g_numRates - 1U];
     g_set.depth_req = g_depths[0];
@@ -113,14 +113,12 @@ void scope_init(void)
 
 uint32_t scope_effective_depth(void)
 {
+    /* count every channel that will be captured: the enabled ones plus the trigger source,
+     * which is sampled even when hidden and takes its own share of sample memory */
     unsigned n = 0;
     for (unsigned i = 0; i < NUM_CHANNELS; i++)
     {
-        n += g_set.ch[i].enabled ? 1U : 0U;
-    }
-    if (n == 0U)
-    {
-        n = 1U;
+        n += (g_set.ch[i].enabled || i == g_set.trig_src) ? 1U : 0U;
     }
     uint32_t best = 0, smallest_fit = 0;
     for (unsigned i = 0; i < g_numDepths; i++)

@@ -497,8 +497,15 @@ static int dispatch(bool *streamed)
             return 0;
         }
         float v;
-        /* no offset DAC: accept the command, keep the fixed offset (§4) */
-        return parse_real(&v);
+        if ((e = parse_real(&v)) != 0)
+        {
+            return e;
+        }
+        /* display window only (see config.h): the ADC data is unaffected */
+        c->offset = fminf(fmaxf(v, -OFFSET_LIMIT_V), OFFSET_LIMIT_V);
+        clamp_trigger_level();
+        scope_settings_changed();
+        return 0;
     }
     if (match("CHANnel#:COUPling", &sfx))
     {

@@ -100,8 +100,14 @@ entry, and returns `0,"No error"` when empty.
 |---|---|---|
 | `:CHANnel<n>:ENABle` | `<bool>` | Disabled channels are not captured or sent. |
 | `:CHANnel<n>:RANGe` | `<real>` V | Full-scale span (max − min). The device picks the **smallest supported range ≥ the request**, or the largest if none is. |
-| `:CHANnel<n>:OFFSet` | `<real>` V | Voltage at the **centre** of the range. The channel then covers `[OFFS − RANG/2, OFFS + RANG/2]`. A device without an offset DAC MUST accept the command, keep its fixed value (normally 0 for a bipolar front end, or RANG/2 for a 0…Vref input), and return that value from the query. Otherwise it clamps to the hardware limit. |
+| `:CHANnel<n>:OFFSet` | `<real>` V | Voltage at the **centre** of the range. The channel then covers `[OFFS − RANG/2, OFFS + RANG/2]`. A device without an offset DAC MUST accept the command and either keep its fixed value (normally 0 for a bipolar front end, or RANG/2 for a 0…Vref input) and return it from the query, or treat range and offset as a display window only (see below). Otherwise it clamps to the hardware limit. |
 | `:CHANnel<n>:COUPling` | `DC` \| `AC` | Unsupported value → error −221, setting unchanged. |
+
+**Display-window ranges.** A device with no gain or offset hardware MAY accept any offset
+(within a limit it chooses) and list extra ranges that only define the window the host
+draws and clamp the trigger level. The ADC still converts its full input span, samples
+are scaled in absolute volts exactly as in §8.2, and `CLIPPED` refers to the ADC limit,
+not the window edge. This lets the host pan and zoom; it does not add resolution.
 
 All voltages are **at the probe tip / BNC**: the device applies its own front-end gain,
 attenuation and calibration. The host never needs to know about the analog front end.

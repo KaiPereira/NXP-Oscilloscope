@@ -14,14 +14,20 @@ port (not the MCU-Link debug port). The board enumerates as `MCXScope`, normally
 | Ground | any GND pin | | |
 
 **Input range is 0 to 3.3 V, straight into the MCU.** There is no front end: negative
-voltages or anything above 3.3 V can damage the chip. The host sees one fixed 3.3 V range
-centred at 1.65 V (default trigger level 1.65 V).
+voltages or anything above 3.3 V can damage the chip.
+
+Range (0.1 to 3.3 V) and offset (±10 V) only move the window ngscopeclient draws, so you
+can pan and zoom; the ADC always converts the full 0..3.3 V and records carry absolute
+volts. Default: 3.3 V range centred at 1.65 V, i.e. the whole ADC span, trigger at 1.65 V.
+Zooming in doesn't add resolution (one ADC step is 0.8 mV), and anything outside 0..3.3 V
+shows as a flat clipped line however you pan.
 
 ## Specs
 
 - 2 channels sampled simultaneously (one ADC each, same timer edge), 12-bit
 - 1 k, 10 k, 100 k, 1 M, 2 MS/s. 2 MS/s is the ADC's conversion limit at its 48 MHz clock
-- Record length 1000 to 20000 samples per channel (40000 samples total)
+- Record length 1000 to 20000 samples per channel, or 30000 when only one channel is captured
+  (the trigger source counts as captured even if hidden)
 - Rising / falling / any edge trigger with hysteresis, sub-sample trigger position, AUTO and NORMAL
 - Readout about 800 kB/s (an 80 KB two-channel 20k record takes 0.1 s)
 - Lower sample rates use a longer ADC sampling window automatically, so high-impedance
