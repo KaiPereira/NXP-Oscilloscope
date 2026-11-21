@@ -1,0 +1,24 @@
+{
+  "version": 7,
+  "cmakeMinimumRequired": { "major": 3, "minor": 22 },
+  "configurePresets": [
+    {
+      "name": "debug",
+      "displayName": "debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "toolchainFile": "${sourceDir}/../sdks/frdm_mcxa156_blank_sdk/mcuxsdk/cmake/toolchain/armgcc.cmake",
+      "environment": {
+        "ARMGCC_DIR": "$env{HOME}/.mcuxpressotools/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi"
+      },
+      "cacheVariables": {
+        "SdkRootDirPath": "${sourceDir}/../sdks/frdm_mcxa156_blank_sdk/mcuxsdk",
+        "board": "frdmmcxa156",
+        "CONFIG_TOOLCHAIN": "armgcc",
+        "CMAKE_BUILD_TYPE": "debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [{ "name": "debug", "configurePreset": "debug" }]
+}

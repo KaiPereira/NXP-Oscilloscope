@@ -23,3 +23,9 @@ venv/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Firmware build output and the local MCUXpresso SDK (installed separately)
+firmware/build/
+sdks/
+frdm_mcxa156_blank/debug/
+frdm_mcxa156_blank/release/
