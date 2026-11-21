@@ -1,0 +1,25 @@
+# Build outputs
+host/scopehal/test/driver_test
+build/
+*.o
+*.a
+*.so
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Vendor binaries that must not be committed (e.g. PicoLog AppImage used during evaluation)
+*.AppImage
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Claude Code local settings
+.claude/settings.local.json
